@@ -605,12 +605,13 @@ class Builder
      * @param array $options
      * @return Query
      */
-    public function mapReduce($map, $reduce, array $options = array())
+    public function mapReduce($map, $reduce, array $out = array('inline' => 1), array $options = array())
     {
         $this->query['type'] = Query::TYPE_MAP_REDUCE;
         $this->query['mapReduce'] = array(
             'map' => $map,
             'reduce' => $reduce,
+            'out' => $out,
             'options' => $options
         );
         return $this;
@@ -641,6 +642,20 @@ class Builder
         if (isset($this->query['mapReduce']['map']) && isset($this->query['mapReduce']['reduce'])) {
             $this->query['type'] = Query::TYPE_MAP_REDUCE;
         }
+        return $this;
+    }
+
+    /**
+     * Specify output type for mar/reduce operation.
+     *
+     * @param array $out
+     * @return Query
+     */
+    public function out(array $out)
+    {
+        $this->query['mapReduce']['out'] = $out;
+        $this->query['type'] = Query::TYPE_MAP_REDUCE;
+
         return $this;
     }
 
